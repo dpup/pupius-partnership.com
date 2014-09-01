@@ -1,0 +1,16 @@
+[Unit]
+Description=pupius-partnership.com apache server
+After=docker.service
+Requires=docker.service
+
+[Service]
+User=core
+Restart=always
+TimeoutSec=180
+
+ExecStartPre=/usr/bin/docker pull pupius/pupius-partnership.com
+ExecStart=/usr/bin/docker run --rm --name partnership -p 5009:80 pupius/pupius-partnership.com  /usr/sbin/apache2ctl -D FOREGROUND
+ExecStop=/usr/bin/docker rm -f partnership
+
+[Install]
+WantedBy=multi-user.target
